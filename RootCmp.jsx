@@ -5,7 +5,7 @@ import { BookIndex } from "./pages/BookIndex.jsx"
 const { useState } = React
 
 export function App() {
-    const [page, setPage] = useState('home')
+    const [page, setPage] = useState('BookIndex')
 
 
     return (
