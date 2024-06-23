@@ -6,12 +6,12 @@ export const storageService = {
     remove,
 }
 
-function query(entityType, delay = 500) {
+function query(entityType, delay = 500) {   // AKA get from storage all items
     var entities = JSON.parse(localStorage.getItem(entityType)) || []
     return new Promise(resolve => setTimeout(() => resolve(entities), delay))
 }
 
-function get(entityType, entityId) {
+function get(entityType, entityId) {  //  AKA get specific entity
     return query(entityType).then(entities => {
         const entity = entities.find(entity => entity.id === entityId)
         if (!entity) throw new Error(`Get failed, cannot find entity with id: ${entityId} in: ${entityType}`)
@@ -19,7 +19,7 @@ function get(entityType, entityId) {
     })
 }
 
-function post(entityType, newEntity) {
+function post(entityType, newEntity) {   //  AKA add another item
     newEntity = { ...newEntity }
     newEntity.id = _makeId()
     return query(entityType).then(entities => {
@@ -29,7 +29,7 @@ function post(entityType, newEntity) {
     })
 }
 
-function put(entityType, updatedEntity) {
+function put(entityType, updatedEntity) {  // AKA update element
     return query(entityType).then(entities => {
         const idx = entities.findIndex(entity => entity.id === updatedEntity.id)
         if (idx < 0) throw new Error(`Update failed, cannot find entity with id: ${entityId} in: ${entityType}`)
@@ -39,7 +39,7 @@ function put(entityType, updatedEntity) {
     })
 }
 
-function remove(entityType, entityId) {
+function remove(entityType, entityId) {  // AKA remove element
     return query(entityType).then(entities => {
         const idx = entities.findIndex(entity => entity.id === entityId)
         if (idx < 0) throw new Error(`Remove failed, cannot find entity with id: ${entityId} in: ${entityType}`)
