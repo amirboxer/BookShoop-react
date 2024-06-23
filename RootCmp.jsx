@@ -7,7 +7,6 @@ const { useState } = React
 export function App() {
     const [page, setPage] = useState('BookIndex')
 
-
     return (
         <section className="app">
             <header className="app-header full main-layout">

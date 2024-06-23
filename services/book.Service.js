@@ -2,7 +2,7 @@ import { utilService } from './util.service.js'
 import { storageService } from './async-storage.service.js'
 
 const BOOK_KEY = 'BOOK_DB'
-var gFilterBy = { title: '', minPrice: 0 }
+var gFilterBy = { title: '', maxPrice: null }
 
 export const bookService = {
     query,
@@ -23,9 +23,9 @@ function query() {
                 const regex = new RegExp(gFilterBy.title, 'i')
                 books = books.filter(book => regex.test(book.title))
             }
-            // if (gFilterBy.minSpeed) { 
-            //     books = books.filter(book => book.maxSpeed >= gFilterBy.minSpeed)
-            // }
+            if (gFilterBy.maxPrice) {
+                books = books.filter(book => book.listPrice.amount <= gFilterBy.maxPrice)
+            }
             return books
         })
 }
@@ -53,7 +53,9 @@ function getFilterBy() {   // copoy of
 
 function setFilterBy(filterBy = {}) {
     if (filterBy.title !== undefined) gFilterBy.title = filterBy.title
-    //if (filterBy.minSpeed !== undefined) gFilterBy.minSpeed = filterBy.minSpeed
+
+    if (filterBy.maxPrice !== undefined) gFilterBy.maxPrice = filterBy.maxPrice
+
     return gFilterBy
 }
 
@@ -74,34 +76,35 @@ function _createDemoBooks() {
             "id": "OXeMG8wNskc",
             "title": "metus hendrerit",
             "description": "placerat nisi sodales suscipit tellus tincidunt mauris elit sit luctus interdum ad dictum platea vehicula conubia fermentum habitasse congue suspendisse",
-            "thumbnail": `assets/img/BooksImages/${utilService.getRandomIntInclusive(1 ,20)}.jpg`,
+            "thumbnail": `assets/img/BooksImages/${utilService.getRandomIntInclusive(1, 20)}.jpg`,
             "listPrice": {
-              "amount": 109,
-              "currencyCode": "EUR",
-              "isOnSale": true
-            }})
+                "amount": 109,
+                "currencyCode": "EUR",
+                "isOnSale": true
+            }
+        })
         books.push({
             "id": "JYOJa2NpSCq",
             "title": "morbi",
             "description": "aliquam pretium lorem laoreet etiam odio cubilia iaculis placerat aliquam tempor nisl auctor",
-            "thumbnail": `assets/img/BooksImages/${utilService.getRandomIntInclusive(1 ,20)}.jpg`,
+            "thumbnail": `assets/img/BooksImages/${utilService.getRandomIntInclusive(1, 20)}.jpg`,
             "listPrice": {
-              "amount": 44,
-              "currencyCode": "EUR",
-              "isOnSale": true
+                "amount": 44,
+                "currencyCode": "EUR",
+                "isOnSale": true
             }
-          })
+        })
         books.push({
             "id": "1y0Oqts35DQ",
             "title": "at viverra venenatis",
             "description": "lorem molestie ut euismod ad quis mi ultricies nisl cursus suspendisse dui tempor sit suscipit metus etiam euismod tortor sagittis habitant",
-            "thumbnail": `assets/img/BooksImages/${utilService.getRandomIntInclusive(1 ,20)}.jpg`,
+            "thumbnail": `assets/img/BooksImages/${utilService.getRandomIntInclusive(1, 20)}.jpg`,
             "listPrice": {
-              "amount": 108,
-              "currencyCode": "ILS",
-              "isOnSale": false
+                "amount": 108,
+                "currencyCode": "ILS",
+                "isOnSale": false
             }
-          })
+        })
         utilService.saveToStorage(BOOK_KEY, books)
     }
 }
@@ -111,9 +114,9 @@ function _createDemoBooks() {
 
 
 
-  
-  
-  
+
+
+
 
 
 // function _createBook({id, title, description, thumbnail, {amount, currencyCode, isOnSale}}) {
